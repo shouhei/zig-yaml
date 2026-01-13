@@ -17,7 +17,7 @@ const usage =
     \\
 ;
 
-var log_scopes: std.ArrayList([]const u8) = std.ArrayList([]const u8).init(gpa.allocator());
+var log_scopes: std.ArrayList([]const u8) = .empty;
 
 fn logFn(
     comptime level: std.log.Level,
@@ -88,7 +88,7 @@ pub fn main(init: std.process.Init.Minimal) !void {
             if (!build_options.enable_logging) {
                 try stderr.interface.writeAll("warn: --debug-log will have no effect as program was not built with -Dlog\n\n");
             } else {
-                try log_scopes.append(args[arg_index]);
+                try log_scopes.append(gpa, args[arg_index]);
             }
         } else {
             file_path = args[arg_index];
